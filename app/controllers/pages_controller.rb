@@ -18,6 +18,13 @@ class PagesController < ApplicationController
   end
 
   def home
+    spotify_user = session[:spotify_user]
+    if spotify_user && spotify_user["id"].present?
+      history = ListeningHistory.new(spotify_user_id: spotify_user["id"])
+      @total_plays = history.count
+    else
+      @total_plays = 0
+    end
   end
 
   def dashboard

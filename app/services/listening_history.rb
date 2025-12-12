@@ -5,6 +5,16 @@ class ListeningHistory
     @spotify_user_id = spotify_user_id
   end
 
+
+  def count
+    return 0 if spotify_user_id.to_s.strip.empty?
+
+    ListeningPlay
+      .where(spotify_user_id: spotify_user_id)
+      .distinct
+      .count(:track_id)
+  end
+
   def ingest!(plays)
     rows = Array(plays).map do |play|
       time = extract_time(play)
